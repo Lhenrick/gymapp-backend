@@ -4,7 +4,6 @@ COPY package.json ./
 COPY package-lock.json ./
 COPY pnpm-lock.yaml ./
 COPY yarn.lock ./
-COPY .npmrc ./
 RUN npm i
 COPY . .
 RUN npm run build
