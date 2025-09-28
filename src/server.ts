@@ -1,6 +1,6 @@
 import app from "./app.js";
 import { env } from "./config/env.js";
-import { prisma } from "./prisma";
+import { prisma } from "./prisma.js";
 
 const port = env.PORT;
 
