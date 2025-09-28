@@ -6,7 +6,13 @@ const port = env.PORT;
 
 async function start() {
   try {
-    await prisma.$connect();
+    if (env.DATABASE_URL && env.DATABASE_URL.trim() !== "") {
+      await prisma.$connect();
+      console.log("✅ Connected to database");
+    } else {
+      console.warn("⚠️  DATABASE_URL not set — skipping DB connect");
+    }
+
     app.listen(port, () => {
       console.log(`✅ Server running on http://localhost:${port}`);
     });
