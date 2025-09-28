@@ -1,22 +1,21 @@
 FROM node:20-alpine
 WORKDIR /app
 
-# 1) Install deps (cacheable)
+# 1) Install deps without running postinstall (no schema yet)
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --ignore-scripts
 
-# 2) Copy source (includes prisma/)
+# 2) Copy the rest of the app (now prisma/ exists in the image)
 COPY . .
 
-# 3) Prisma runtime dependency on Alpine
+# 3) Prisma runtime deps on Alpine
 RUN apk add --no-cache openssl
 
-# 4) Generate Prisma Client AFTER prisma/ is present
+# 4) Generate Prisma Client (now schema is present)
 RUN npx prisma generate --schema=prisma/schema.prisma
 
 # 5) Build TS
 RUN npm run build
 
 EXPOSE 8080
-# 6) Run migrations at container start, then start the server
-CMD ["sh", "-c", "npx prisma migrate deploy --schema=prisma/schema.prisma && node dist/server.js"]
+CMD ["node", "dist/server.js"]
