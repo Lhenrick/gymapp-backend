@@ -2,7 +2,7 @@ FROM node:20-alpine
 WORKDIR /app
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm i
+RUN npm ci
 COPY . .
 RUN npm run build
 EXPOSE 8080

@@ -1,25 +1,24 @@
-import jwt, { SignOptions, Secret } from "jsonwebtoken";
+// src/utils/jwt.ts
+import jwt from "jsonwebtoken";
 import { env } from "../config/env";
 
 export interface JwtPayload {
   sub: string; // userId
 }
 
-function getSecret(): Secret {
+function getSecret() {
   if (!env.JWT_SECRET) {
     throw new Error("JWT_SECRET is not defined in environment variables");
   }
-  // jsonwebtoken's Secret type accepts string | Buffer | KeyObject
-  return env.JWT_SECRET as Secret;
+  return env.JWT_SECRET; // string is a valid Secret
 }
 
 export function signJwt(
   payload: JwtPayload,
   expiresIn: string | number = "7d"
 ) {
-  const options: SignOptions = { expiresIn };
-  // Spread forces "object" payload and avoids any special-claim inference issues
-  return jwt.sign({ ...payload }, getSecret(), options);
+  // spreading ensures object payload
+  return jwt.sign({ ...payload }, getSecret(), { expiresIn });
 }
 
 export function verifyJwt<T = JwtPayload>(token: string): T {
