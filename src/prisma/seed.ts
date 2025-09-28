@@ -13,7 +13,7 @@ async function main() {
     { slug: "hamstrings", name: "Hamstrings" },
     { slug: "glutes", name: "Glutes" },
     { slug: "calves", name: "Calves" },
-    { slug: "abs", name: "Abs" }
+    { slug: "abs", name: "Abs" },
   ];
 
   for (const m of muscles) {
@@ -32,7 +32,11 @@ async function main() {
   if (chest && back && biceps) {
     await prisma.exercise.createMany({
       data: [
-        { name: "Barbell Bench Press", muscleId: chest.id, equipment: "Barbell" },
+        {
+          name: "Barbell Bench Press",
+          muscleId: chest.id,
+          equipment: "Barbell",
+        },
         { name: "Dumbbell Flyes", muscleId: chest.id, equipment: "Dumbbells" },
         { name: "Pull-ups", muscleId: back.id, equipment: "Bodyweight" },
         { name: "Barbell Row", muscleId: back.id, equipment: "Barbell" },
