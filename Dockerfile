@@ -1,6 +1,10 @@
 FROM node:20-alpine
 WORKDIR /app
-COPY package.json package-lock.json* pnpm-lock.yaml* yarn.lock* .npmrc* ./ 2>/dev/null || true
+COPY package.json ./
+COPY package-lock.json ./
+COPY pnpm-lock.yaml ./
+COPY yarn.lock ./
+COPY .npmrc ./
 RUN npm i
 COPY . .
 RUN npm run build
