@@ -1,21 +1,38 @@
-FROM node:20-alpine
+FROM node:20-alpine AS builder
 WORKDIR /app
 
-# 1) Install deps without running postinstall (no schema yet)
+# Install all deps (including dev dependencies) in the builder
 COPY package*.json ./
-RUN npm ci --ignore-scripts
+RUN npm ci
 
-# 2) Copy the rest of the app (now prisma/ exists in the image)
+# Copy source and other files needed for build
 COPY . .
 
-# 3) Prisma runtime deps on Alpine
+# Install runtime deps needed by Prisma on Alpine
 RUN apk add --no-cache openssl
 
-# 4) Generate Prisma Client (now schema is present)
+# Generate Prisma client and build TypeScript
 RUN npx prisma generate --schema=prisma/schema.prisma
-
-# 5) Build TS
 RUN npm run build
+
+# Remove devDependencies to keep node_modules small for runtime
+RUN npm prune --production
+
+
+### Final image: copy only production artifacts
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+# Copy package metadata (optional)
+COPY package*.json ./
+
+# Copy production node_modules and compiled output
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/prisma ./prisma
+
+# Ensure runtime deps for Prisma
+RUN apk add --no-cache openssl
 
 EXPOSE 8080
 CMD ["node", "dist/server.js"]
