@@ -3,7 +3,8 @@ WORKDIR /app
 
 # Install all deps (including dev dependencies) in the builder
 COPY package*.json ./
-RUN npm ci
+# Install dependencies but skip lifecycle scripts (postinstall) until schema is present
+RUN npm ci --ignore-scripts
 
 # Copy source and other files needed for build
 COPY . .
@@ -11,7 +12,7 @@ COPY . .
 # Install runtime deps needed by Prisma on Alpine
 RUN apk add --no-cache openssl
 
-# Generate Prisma client and build TypeScript
+# Generate Prisma client after source files are copied, then build TypeScript
 RUN npx prisma generate --schema=prisma/schema.prisma
 RUN npm run build
 
