@@ -1,8 +1,10 @@
 import fs from "fs";
+import { env } from "./config/env.js";
+
 const spec = {
   openapi: "3.0.0",
   info: { title: "gymapp API", version: "1.0.0" },
-  servers: [{ url: "http://localhost:8080/api" }],
+  servers: [{ url: `${env.APP_URL.replace(/\/$/, "")}/api` }],
   paths: {
     "/auth/register": {
       post: {

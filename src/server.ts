@@ -14,7 +14,9 @@ async function start() {
     }
 
     app.listen(port, () => {
-      console.log(`✅ Server running on http://localhost:${port}`);
+      // Prefer to show the public APP_URL when available (e.g. Railway).
+      const publicUrl = env.APP_URL ? env.APP_URL.replace(/\/$/, "") : `http://localhost:${port}`;
+      console.log(`✅ Server running on ${publicUrl}`);
     });
   } catch (e) {
     console.error("Failed to start:", e);
