@@ -4,21 +4,30 @@ import helmet from "helmet";
 import morgan from "morgan";
 import routes from "./routes/index.js";
 import { errorHandler } from "./middleware/error.js";
-import { env } from "./config/env.js";
 
 // Allowed CORS origins. If you deployed the backend to Railway set APP_URL in
 // your Railway project and it will automatically be added here. Keep any
 // frontend origins you need (e.g., localhost:3000).
-const allowed = [
-  "http://localhost:3000",
-  "https://gymapp-backend-three.vercel.app",
-  "https://click-n-fit.vercel.app",
-  env.APP_URL,
-];
+const allowed = ["http://localhost:3000", "https://click-n-fit.vercel.app"];
 
 const app = express();
 app.use(helmet());
-app.use(cors({ origin: allowed, credentials: true }));
+app.use(
+  cors({
+    credentials: true,
+    origin(origin, callback) {
+      // origin is undefined for tools like Postman
+      console.log("🌐 CORS request from:", origin);
+
+      if (!origin || allowed.includes(origin)) {
+        return callback(null, true);
+      }
+
+      console.warn("❌ CORS blocked:", origin);
+      return callback(new Error("Not allowed by CORS"));
+    },
+  })
+);
 app.use(express.json({ limit: "1mb" }));
 app.use(morgan("dev"));
 
