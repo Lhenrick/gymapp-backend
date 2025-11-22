@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import routes from "./routes/index.js";
+import userRoutes from "./routes/user";
 import { errorHandler } from "./middleware/error.js";
 
 // Allowed CORS origins. If you deployed the backend to Railway set APP_URL in
@@ -35,11 +36,8 @@ app.use(express.json({ limit: "1mb" }));
 app.use(morgan("dev"));
 
 app.get("/health", (_req, res) => res.json({ ok: true }));
-
-// Provide the health route both at /health and /api/health so deployments
-// (or external checks) that target the /api prefix work as expected.
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
-
+app.use("/api/user", userRoutes);
 app.use("/api", routes);
 
 app.use(errorHandler);
