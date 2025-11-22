@@ -8,7 +8,10 @@ import { errorHandler } from "./middleware/error.js";
 // Allowed CORS origins. If you deployed the backend to Railway set APP_URL in
 // your Railway project and it will automatically be added here. Keep any
 // frontend origins you need (e.g., localhost:3000).
-const allowed = ["http://localhost:3000", "https://click-n-fit.vercel.app"];
+const allowed = [
+  "http://localhost:3000",
+  "https://click-n-fit.vercel.app, https://vercel.com/lhenricks-projects/click-n-fit/ANj79AzL2tx4NzW9WeD5q2Jow6kS",
+];
 
 const app = express();
 app.use(helmet());
