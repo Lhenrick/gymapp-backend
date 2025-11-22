@@ -3,7 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import routes from "./routes/index.js";
-import userRoutes from "./routes/user";
+import userRoutes from "./routes/user.js";
 import { errorHandler } from "./middleware/error.js";
 
 // Allowed CORS origins. If you deployed the backend to Railway set APP_URL in
