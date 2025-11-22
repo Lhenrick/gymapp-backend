@@ -15,7 +15,9 @@ async function start() {
 
     app.listen(port, () => {
       // Prefer to show the public APP_URL when available (e.g. Railway).
-      const publicUrl = env.APP_URL ? env.APP_URL.replace(/\/$/, "") : `http://localhost:${port}`;
+      const publicUrl = env.APP_URL
+        ? env.APP_URL.replace(/\/$/, "")
+        : `http://localhost:${port}`;
       console.log(`✅ Server running on ${publicUrl}`);
     });
   } catch (e) {

@@ -8,5 +8,6 @@ export const env = {
   // APP_URL is the public URL where the app is reachable (include protocol),
   // e.g. https://gymapp-backend-production-77bd.up.railway.app
   APP_URL:
-    process.env.APP_URL ?? `http://localhost:${process.env.PORT ? Number(process.env.PORT) : 8080}`,
+    process.env.APP_URL ??
+    `http://localhost:${process.env.PORT ? Number(process.env.PORT) : 8080}`,
 };

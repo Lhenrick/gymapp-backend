@@ -12,6 +12,7 @@ import { env } from "./config/env.js";
 const allowed = [
   "http://localhost:3000",
   "https://gymapp-backend-three.vercel.app",
+  "https://click-n-fit.vercel.app/",
   env.APP_URL,
 ];
 
