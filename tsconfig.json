@@ -9,5 +9,5 @@
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
-  "include": ["src", "prisma"]
+  "include": ["src", "prisma", "quick-test.ts"]
 }

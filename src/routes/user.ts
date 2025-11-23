@@ -1,15 +1,21 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import { prisma } from "../prisma.js";
+import { requireAuth } from "../middleware/requireAuth.js";
 
 const router = Router();
 
-router.get("/profile", async (req, res) => {
+// GET /api/user/profile
+router.get("/profile", requireAuth, async (req: Request, res: Response) => {
   try {
-    const user = await prisma.user.findFirst({
+    // we put this in requireAuth: (req as any).userId = payload.sub
+    const userId = (req as any).userId as string;
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
       select: {
         id: true,
-        email: true,
         name: true,
+        email: true,
       },
     });
 
